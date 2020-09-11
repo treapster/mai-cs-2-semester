@@ -38,7 +38,6 @@ int parse(struct Char_vector* expression, struct Token_list* tokens)
 	curr_token.var_name=NULL;
 	for(int i=0;expression->data[i]!=0;i++)
 	{
-		//printf("%d \n", i);
 		symbol=expression->data[i];
 		type=type_of_char(symbol);
 		if(type!=unknown)
@@ -176,34 +175,9 @@ int parse(struct Char_vector* expression, struct Token_list* tokens)
 			}
 		push_item(tokens, NULL, curr_token);
 	}
-	return tokens->size;
+	return 0;
 }
 
-void print(struct Token_list* tokens)
-{
-	enum stored_type type;
-	struct Item* i=tokens->begin;
-	while(i!=NULL)
-	{
-		type=i->data.type;
-		switch(type)
-			{
-				case variable:
-					printf("%s is a variable name\n", i->data.var_name->data);
-					break;
-				case number:
-					printf("%d is a number\n", i->data.value);
-					break;
-				case operator:
-					printf("%c is an operator\n", i->data.operator);
-					break;
-				case bracket:
-					printf("%c is a bracket\n", i->data.bracket);
-					break;
-			}
-		i=i->next;
-	}
-}
 struct Node
 {
 	struct Token* data;
@@ -306,7 +280,6 @@ int remove_zeros(struct Node* node)
 	}
 	if(left)
 	{
-		printf("here\n");
 		struct Node* old_left=node->left;
 		struct Node* old_right=node->right;
 		node->data=node->right->data;
@@ -333,82 +306,6 @@ int remove_zeros(struct Node* node)
 	}
 
 }
-void draw_result(struct Node* node)
-{
-	if(node==NULL)
-		return;
-	draw_result(node->left);
-	enum stored_type type=node->data->type;
-	switch(type)
-	{
-		case variable:
-			printf("%s", node->data->var_name->data);
-			break;
-		case number:
-			printf("%d", node->data->value);
-			break;
-		case operator:
-			printf("%c", node->data->operator);
-			break;
-		case bracket:
-			printf("%c", node->data->bracket);
-			break;
-	}
-	draw_result(node->right);
-}
-
-void draw_list(struct Token_list* list)
-{
-	struct Item* i=list->begin;
-	while(i!=NULL)
-	{
-		enum stored_type type=i->data.type;
-		switch(type)
-			{
-				case variable:
-					printf("%s ", i->data.var_name->data);
-					break;
-				case number:
-					printf("%d ", i->data.value);
-					break;
-				case operator:
-					printf("%c ", i->data.operator);
-					break;
-				case bracket:
-					printf("%c ", i->data.bracket);
-					break;
-			}
-		i=i->next;
-	}
-	printf("\n");
-}
-void draw_nodes(struct Node* node, int level)
-{
-	if(node==NULL)
-		return;
-	for(int i=0;i<level;i++)
-		printf("  ");
-	enum stored_type type=node->data->type;
-	switch(type)
-	{
-		case variable:
-			printf("%s\n", node->data->var_name->data);
-			break;
-		case number:
-			printf("%d\n", node->data->value);
-			break;
-		case operator:
-			printf("%c\n", node->data->operator);
-			break;
-		case bracket:
-			printf("%c\n", node->data->bracket);
-			break;
-	}
-
-	draw_nodes(node->right, level+1);
-	draw_nodes(node->left, level+1);
-}
-
 
 int priority(struct Token token)
 {
@@ -464,7 +361,7 @@ void draw_expr(struct Node* node, int open_brackets, int closed_brackets)
 	}
 	if(node->left->data->type==operator)
 	{
-		draw_expr(node->left, open_brackets+1, closed_brackets);
+		draw_expr(node->left, open_brackets+1, 0);
 		printf(")");
 	}
 	else
@@ -475,7 +372,7 @@ void draw_expr(struct Node* node, int open_brackets, int closed_brackets)
 	if(node->right->data->type==operator)
 	{		
 		printf("(");
-		draw_expr(node->right, open_brackets, closed_brackets+1);
+		draw_expr(node->right, 0, closed_brackets+1);
 	}
 	else
 	{
@@ -504,10 +401,8 @@ void set_levels(struct Token_list* tokens)
 		{
 			item->data.level=level;
 		}
-		printf("%d", level);
 		item=item->next;
 	}
-	printf("\n");
 }
 void remove_brackets(struct Token_list* list)
 {
@@ -544,11 +439,13 @@ struct Node* build(struct Item* begin, struct Item* end)
 		}
 		if(i->data.level==min)
 		{
-			if(priority(i->data)<priority(index->data))
+			int pr_old=priority(index->data);
+			int pr_new=priority(i->data);
+			if(pr_new<pr_old)
 				index=i;
 			else
 			{
-				if((index->data.type==operator && i->data.type==operator) && (i->data.operator==index->data.operator && i->data.operator!='^'))
+				if((index->data.type==operator && i->data.type==operator) && (pr_old==pr_new && i->data.operator!='^'))
 					index=i;
 			}
 		}
@@ -588,32 +485,13 @@ int main()
 		count=parse(expression, tokens);
 		if(count!=-1)
 		{
-			printf("Tokens before:\n");
-			draw_list(tokens);
 			set_levels(tokens);
 			remove_brackets(tokens);
 			struct Node* tree=build(tokens->begin, tokens->end);
-			
-			print(tokens);
-			
-			printf("Tree before:\n");
-			draw_nodes(tree, 0);
 			calculate(tree);
-			printf("Tree after:\n");
-			draw_nodes(tree,0);
 			remove_zeros(tree);
-			printf("Tree after removing zeros:\n");
-			draw_nodes(tree, 0);
-			printf("Tokens after:\n");
-			draw_list(tokens);
-			printf("Final output:\n");
-			if(count==0)
-			{
-				draw_result(tree);
-			}
 			draw_expr(tree,0,0);
 			printf("\n");
-			//printf("%d %d\n", tokens->size, tokens->capacity);
 			clear_char_vector(expression);
 			clear_token_list(tokens);
 			delete_node(tree);
