@@ -1,0 +1,38 @@
+#!/bin/bash 
+
+if [[ $1 == "-help" ||  $1 == "-h" ]]
+then
+		echo -e "This is a bash script for removing files with a certain prefix until specified size of a directory is reached or all the matched	 files are deleted.
+		\nUse: $0 [prefix] [size] "
+		exit 0
+fi
+
+if [[ $# -lt 2 ]]
+then
+	echo "not enough arguments! At least 2 required - prefix and size "
+fi
+if [[ $2 =~ ^[1-9]+[A-Za-z]$ ]]
+then
+	echo "fine"
+else
+	echo 'Invalid size format'
+fi
+if [[ $3 == "-test" ]]
+then
+	find . -name "$1*" -type f  -exec du  -b {} + | sort -r -h  
+	exit 0
+fi
+export 	total=0
+declare -a array
+
+volume=$(du . -s -b)  
+#echo $volume
+exit 0
+
+shopt -s lastpipe
+find . -name "$1*" -type f  -exec du  -b {} + | sort -r -h  | while read -r size path ; do out=$(rm path);
+    if [[ -z $out ]] then let total-=$size; echo "$size $path $total"; done
+echo $total
+exit 0
+echo "${array[0]}"
+array+="${"$size $path"}" ; 

@@ -1,0 +1,134 @@
+denis@denis-X510UNR:~/Documents/labs/lab21$ ls
+l21.sh  l21.sh~  mingw64  nam.out  Picture.png  Ref.odt  Revunov.docx  Vector_report_blank_filled.odt
+denis@denis-X510UNR:~/Documents/labs/lab21$ du -s -b -h
+438M	.
+denis@denis-X510UNR:~/Documents/labs/lab21$ du -s -b
+458392516	.
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh c 435M -test -show | tail
+170 ./mingw64/opt/share/terminfo/63/cad68-3
+170 ./mingw64/opt/lib/terminfo/63/cgc3
+170 ./mingw64/opt/lib/terminfo/63/cad68-3
+152 ./mingw64/opt/ssl/misc/c_info
+119 ./mingw64/opt/ssl/misc/c_hash
+112 ./mingw64/opt/ssl/misc/c_issuer
+110 ./mingw64/opt/ssl/misc/c_name
+62 ./mingw64/opt/lib/python2.7/xml/etree/cElementTree.py
+47 ./mingw64/opt/lib/python2.7/lib2to3/tests/data/crlf.py
+directory size is 458392516 bytes(437 M), 802 files can be deleted totalling 60218843 bytes (57 M)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh c 435M -test
+directory size is 458392516 bytes(437 M), 802 files can be deleted totalling 60218843 bytes(57 M)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh c 435M -test -d
+directory size is 458392516 bytes(458 M), 802 files can be deleted totalling 60218843 bytes(60 M)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh c 435M -show
+23177728 ./mingw64/libexec/gcc/x86_64-w64-mingw32/7.3.0/cc1plus.exe
+directory size was 458392516 bytes(437 M) and was reduced to 435214788 bytes(415 M) by deleting 1 files totalling 23177728 bytes(22 M)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh c 405M -show 
+21998592 ./mingw64/libexec/gcc/x86_64-w64-mingw32/7.3.0/cc1.exe
+directory size was 435214788 bytes(415 M) and was reduced to 413216196 bytes(394 M) by deleting 1 files totalling 21998592 bytes(20 M)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh c 390m -test -show | head
+1912320 ./mingw64/bin/c++.exe
+1910784 ./mingw64/bin/cpp.exe
+1503744 ./mingw64/libexec/gcc/x86_64-w64-mingw32/7.3.0/collect2.exe
+1054208 ./mingw64/bin/c++filt.exe
+422405 ./mingw64/x86_64-w64-mingw32/include/comsvcs.h
+298533 ./mingw64/x86_64-w64-mingw32/include/cdoex.h
+256783 ./mingw64/x86_64-w64-mingw32/include/cluscfgserver.h
+176838 ./mingw64/x86_64-w64-mingw32/include/commctrl.h
+132509 ./mingw64/opt/lib/tcl8.6/encoding/cp936.enc
+130423 ./mingw64/opt/lib/tcl8.6/encoding/cp949.enc
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh c 390m -show 
+1912320 ./mingw64/bin/c++.exe
+1910784 ./mingw64/bin/cpp.exe
+1503744 ./mingw64/libexec/gcc/x86_64-w64-mingw32/7.3.0/collect2.exe
+directory size was 413216196 bytes(394 m) and was reduced to 407889348 bytes(388 m) by deleting 3 files totalling 5326848 bytes(5 m)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh c 385m 
+directory size was 407891790 bytes(388 m) and was reduced to 403664098 bytes(384 m) by deleting 29 files totalling 4227692 bytes(4 m)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh -h
+
+./l21.sh searches for files beginning with PREFIX and deletes the biggest of them until the size of a directory reaches SIZE or there's no such files left.	
+
+ syntax:	
+ ./l21.sh [OPTIONS] [PREFIX] [SIZE][UNIT]	
+ possible units:	
+ B/b or omitted - bytes	
+ K/k - kilobytes	
+ M/m - megabytes	
+ G/g - gigabytes
+	
+ SIZE should always be after PREFIX and unit has to be after size without separators, while the OPTIONS positions don't really matter.	
+ By default both PREFIX and SIZE are required, but with -test option SIZE can be omitted. Howewer, in this case all sizes of files will only be printed in bytes.	
+	
+ Avaiable options:	
+ -h or -help - display this guide	
+ -test - find matching files but don't delete	
+ -show - show every matching file with -test option, or show only matching and deleted files without it.	
+ -d - decimal - use powers of 10 instead of 2 for units. Kilobytes become 1000 instead of 1024, megabytes are considered 10^6 instead of 2^20 and etc. Without this option binary units are used.
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh -h -show c 383m 
+
+./l21.sh searches for files beginning with PREFIX and deletes the biggest of them until the size of a directory reaches SIZE or there's no such files left.	
+
+ syntax:	
+ ./l21.sh [OPTIONS] [PREFIX] [SIZE][UNIT]	
+ possible units:	
+ B/b or omitted - bytes	
+ K/k - kilobytes	
+ M/m - megabytes	
+ G/g - gigabytes
+	
+ SIZE should always be after PREFIX and unit has to be after size without separators, while the OPTIONS positions don't really matter.	
+ By default both PREFIX and SIZE are required, but with -test option SIZE can be omitted. Howewer, in this case all sizes of files will only be printed in bytes.	
+	
+ Avaiable options:	
+ -h or -help - display this guide	
+ -test - find matching files but don't delete	
+ -show - show every matching file with -test option, or show only matching and deleted files without it.	
+ -d - decimal - use powers of 10 instead of 2 for units. Kilobytes become 1000 instead of 1024, megabytes are considered 10^6 instead of 2^20 and etc. Without this option binary units are used.
+
+
+Some other parameters were passed besides -help. Would you like to execute ./l21.sh using them?(Y/n)
+Y
+54354 ./mingw64/x86_64-w64-mingw32/include/comdefsp.h
+54204 ./mingw64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/complex
+.
+.
+ --пропущено 49 строк--
+.
+.
+31316 ./mingw64/opt/ssl/man/man1/ciphers.1
+31000 ./mingw64/x86_64-w64-mingw32/include/comcat.h
+30461 ./mingw64/opt/ssl/man/man1/ca.1
+directory size was 403665372 bytes(384 m) and was reduced to 401598425 bytes(382 m) by deleting 54 files totalling 2066947 bytes(1 m)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh -b c 140j
+-b is unknown function
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh -d c 140j
+140j is unknown size format
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh -d c 140k e -test
+Too much arguments. Only [prefix] [size] required
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh -d -show -test
+No prefix provided. Use -h or -help for more info.
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh  -show -test gcc
+1909248 ./mingw64/bin/gcc.exe
+60928 ./mingw64/bin/gcc-ranlib.exe
+60928 ./mingw64/bin/gcc-nm.exe
+60928 ./mingw64/bin/gcc-ar.exe
+directory size is 401600049 bytes(401600049 b), 4 files can be deleted totalling 2092032 bytes (2092032 b)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh  -show -test gcc 360k
+1909248 ./mingw64/bin/gcc.exe
+60928 ./mingw64/bin/gcc-ranlib.exe
+60928 ./mingw64/bin/gcc-nm.exe
+60928 ./mingw64/bin/gcc-ar.exe
+directory size is 401600049 bytes(392187 k), 4 files can be deleted totalling 2092032 bytes (2043 k)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh  -show -test gcc 360m
+1909248 ./mingw64/bin/gcc.exe
+60928 ./mingw64/bin/gcc-ranlib.exe
+60928 ./mingw64/bin/gcc-nm.exe
+60928 ./mingw64/bin/gcc-ar.exe
+directory size is 401600049 bytes(382 m), 4 files can be deleted totalling 2092032 bytes (1 m)
+denis@denis-X510UNR:~/Documents/labs/lab21$ ./l21.sh  -show -test gcc 360g
+1909248 ./mingw64/bin/gcc.exe
+60928 ./mingw64/bin/gcc-ranlib.exe
+60928 ./mingw64/bin/gcc-nm.exe
+60928 ./mingw64/bin/gcc-ar.exe
+directory size is 401600049 bytes(0 g), 4 files can be deleted totalling 2092032 bytes (0 g)
+
+

@@ -1,0 +1,11 @@
+cyrillic.txt
+empty.txt
+lab15.c
+latin.txt
+letters.txt
+lettersWithNumbers
+man
+numbers.txt
+numbers.txt~
+picture.jpg
+program.c
